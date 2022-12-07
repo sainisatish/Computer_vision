@@ -1,0 +1,48 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def passfunc(nothing):
+    pass
+
+
+cv2.namedWindow("img",cv2.WINDOW_NORMAL)
+cv2.resizeWindow("img",1080,720)
+img = cv2.imread("map.png")
+
+plt.imshow(img[:,:,::-1])
+plt.show()
+
+img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+plt.imshow(img)
+plt.show()
+
+blur_img = cv2.GaussianBlur(img,(5,5),0)
+plt.imshow(blur_img)
+plt.show()
+
+edge_img = cv2.Canny(img,50,200)
+
+cv2.createTrackbar("t1","img",0,1000,passfunc)
+cv2.createTrackbar("t2","img",0,1000,passfunc)
+
+while(1):
+    
+    cv2.imshow("img",edge_img)
+    
+    
+    
+    k = cv2.waitKey(1) & 0XFF
+    
+    if k==27:
+        break
+    
+    t1 = cv2.getTrackbarPos("t1","img")
+    t2 = cv2.getTrackbarPos("t2","img")
+    
+    edge_img = cv2.Canny(img,t1,t2)
+    
+    
+    
+    
+cv2.destroyAllWindows()
